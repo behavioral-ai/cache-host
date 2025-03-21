@@ -1,4 +1,4 @@
-package httpx
+package http2
 
 import (
 	"github.com/behavioral-ai/core/httpx"
