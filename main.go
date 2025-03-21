@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/behavioral-ai/cache-host/httpx"
 	"log"
 	"net/http"
 	"os"
@@ -76,15 +77,12 @@ func displayRuntime(port string) {
 }
 
 func startup(r *http.ServeMux, cmdLine []string) (http.Handler, bool) {
-	// Start operations agent
-	//module.Startup("localhost")
-
 	// Initialize health handlers
 	r.Handle(healthLivelinessPattern, http.HandlerFunc(healthLivelinessHandler))
 	r.Handle(healthReadinessPattern, http.HandlerFunc(healthReadinessHandler))
 
-	// Add operations handler
-	//r.Handle(module.ResiliencyPath, http.HandlerFunc(http2.Exchange))
+	// Handle all requests
+	r.Handle("/", http.HandlerFunc(httpx.Exchange))
 	return r, true
 }
 
