@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/behavioral-ai/cache-host/http2"
+	http2 "github.com/behavioral-ai/cache-host/http"
 	"log"
 	"net/http"
 	"os"
