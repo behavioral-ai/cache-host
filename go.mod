@@ -2,6 +2,6 @@ module github.com/behavioral-ai/cache-host
 
 go 1.21.4
 
-require github.com/behavioral-ai/core v0.0.0-20250328155400-0d6816df227e
+require github.com/behavioral-ai/core v0.0.0-20250331105047-edc83e8a00bd
 
 require github.com/google/uuid v1.6.0 // indirect
