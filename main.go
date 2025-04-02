@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/behavioral-ai/core/httpx"
+	"github.com/behavioral-ai/cache-host/endpoint"
 	"log"
 	"net/http"
 	"os"
@@ -20,10 +20,6 @@ const (
 	idleTimeout             = time.Second * 60
 	healthLivelinessPattern = "/health/liveness"
 	healthReadinessPattern  = "/health/readiness"
-)
-
-var (
-	cache = httpx.NewResponseCache()
 )
 
 func main() {
@@ -86,7 +82,7 @@ func startup(r *http.ServeMux, cmdLine []string) (http.Handler, bool) {
 	r.Handle(healthReadinessPattern, http.HandlerFunc(healthReadinessHandler))
 
 	// Handle all requests
-	r.Handle("/", http.HandlerFunc(cacheExchange))
+	r.Handle("/", http.HandlerFunc(endpoint.Exchange))
 	return r, true
 }
 
@@ -105,28 +101,5 @@ func writeHealthResponse(w http.ResponseWriter, status error) {
 
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
-	}
-}
-
-// Exchange - HTTP exchange function
-func cacheExchange(w http.ResponseWriter, r *http.Request) {
-	var (
-		resp *http.Response
-	)
-
-	switch r.Method {
-	case http.MethodGet:
-		resp = cache.Get(r.URL.String())
-		if resp.StatusCode == http.StatusNotFound {
-			w.WriteHeader(resp.StatusCode)
-			return
-		}
-		httpx.WriteResponse(w, resp.Header, resp.StatusCode, resp.Body, nil)
-	case http.MethodPut:
-		cache.Put(r.URL.String(), httpx.CreateResponse(r))
-		w.WriteHeader(http.StatusOK)
-	default:
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
 	}
 }
