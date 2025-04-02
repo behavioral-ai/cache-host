@@ -1,4 +1,4 @@
-package http
+package endpoint
 
 import (
 	"github.com/behavioral-ai/core/httpx"

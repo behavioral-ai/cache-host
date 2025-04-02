@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	http2 "github.com/behavioral-ai/cache-host/http"
+	"github.com/behavioral-ai/cache-host/endpoint"
 	"log"
 	"net/http"
 	"os"
@@ -82,7 +82,7 @@ func startup(r *http.ServeMux, cmdLine []string) (http.Handler, bool) {
 	r.Handle(healthReadinessPattern, http.HandlerFunc(healthReadinessHandler))
 
 	// Handle all requests
-	r.Handle("/", http.HandlerFunc(http2.Exchange))
+	r.Handle("/", http.HandlerFunc(endpoint.Exchange))
 	return r, true
 }
 
